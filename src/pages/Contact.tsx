@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { useToast } from "@/components/ui/use-toast";
+import WeatherWidget from "@/components/ui/WeatherWidget";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -253,6 +253,10 @@ const Contact = () => {
             </AnimatedSection>
             
             <AnimatedSection animation="slide-left">
+              <div className="mb-8">
+                <WeatherWidget />
+              </div>
+              
               <h2 className="text-3xl font-display font-semibold text-stone-800 mb-8">
                 Contact Information
               </h2>
