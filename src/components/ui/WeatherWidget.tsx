@@ -13,7 +13,7 @@ type WeatherData = {
   icon: string;
 };
 
-const WeatherWidget = ({ location = "Hunder, Nubra Valley" }: { location?: string }) => {
+const WeatherWidget = ({ location = "Leh" }: { location?: string }) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,11 +23,13 @@ const WeatherWidget = ({ location = "Hunder, Nubra Valley" }: { location?: strin
       try {
         // Using OpenWeatherMap's free API
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=9de243494c0b295cca9337e1e96b00e2&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=9de243494c0b295cca9337e1e96b00e2&units=metric`
         );
         
         if (!response.ok) {
-          throw new Error("Weather data not available");
+          const errorData = await response.json();
+          console.error("Weather API error:", errorData);
+          throw new Error(errorData.message || "Weather data not available");
         }
         
         const data = await response.json();
@@ -74,7 +76,7 @@ const WeatherWidget = ({ location = "Hunder, Nubra Valley" }: { location?: strin
     <Card className={cn("overflow-hidden backdrop-blur-sm", 
       loading || error ? "bg-white/90" : "bg-white/80")}>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-medium">Current Weather</CardTitle>
+        <CardTitle className="text-lg font-medium">Weather in {location}</CardTitle>
       </CardHeader>
       <CardContent>
         {loading && (
